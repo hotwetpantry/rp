@@ -1,0 +1,95 @@
+<html>
+    <head>
+        <script src="angular.js"></script>
+        <script src="app.js"></script>
+    </head>
+
+    <body ng-app="pantryApp" style="width:500px;">
+        <div ng-controller="mainController as main">
+            <h1>{{main.message}}</h1>
+
+            <div 
+            ng-repeat="girl in main.girls" 
+                 class={{girl.state}}>
+                <button ng-click="main.makeCrazy(girl)" ng-show="girl.state!='crazy'">C</button>
+                <button ng-click="main.makeNormal(girl)" ng-show="girl.state!='normal'">N</button>
+                <button ng-click="main.open(girl)">Open</button>
+                {{girl.name}} 
+            </div>
+
+            <div class="pagination">
+                <button ng-click="main.prevPage()" ng-disabled="main.currentPage==1">Prev</button>
+                {{main.currentPage}}
+                <button ng-click="main.nextPage()">Next</button>
+            </div>
+            <br>
+            <input type="text" ng-model="main.currentPage" style="width:50"/>
+            <input type="text" ng-model="main.pageSize" style="width:50"/>pagesize
+            <button ng-click="main.loadGirls()">Go to</button>
+        </div>
+
+        <h2>Are you crazy</h2>
+        <div ng-controller="randController as rand">
+            <h3>Target: '{{rand.tag}}'</h3>
+            <div class="just-{{rand.tag=='all'}}"ng-click="rand.tag='all'">All</div>
+            <div class="just-{{rand.tag=='crazy'}}"ng-click="rand.tag='crazy'">Crazy</div>
+            <div class="just-{{rand.tag=='normal'}}"ng-click="rand.tag='normal'">Normal</div>
+            <div class="just-{{rand.tag=='unknown'}}"ng-click="rand.tag='unknown'">Unknown</div>
+            
+            <div ng-click="rand.hideNames = !rand.hideNames"><input type="checkbox" ng-model="rand.hideNames">Hide names</div>
+            <div ng-click="rand.cheat = !rand.cheat"><input type="checkbox" ng-model="rand.cheat">Cheat</div>
+            <input ng-model="rand.count" placeholder="count" style="width:50"/>
+            <button ng-click=rand.load()>Load</button>
+            <br>
+            <br>
+            <div ng-repeat="girl in rand.girls" class="{{rand.cheat?girl.state:'bomb'}}">
+                <span ng-show="rand.cheat?girl.state=='unknown':false">
+                    <button ng-click="rand.makeCrazy(girl)">C</button>
+                    <button ng-click="rand.makeNormal(girl)">N</button>
+                </span>
+                <button ng-click="rand.open(girl)">Open</button>
+                {{rand.hideNames?"xxxxx":girl.name}} 
+            </div>
+        </div>
+    </body>
+
+    <style>
+        div{
+            margin: 3px;
+            padding: 3px;
+        }
+
+        button{
+            margin-right:3px; 
+            padding: 10px;
+        }
+
+        .crazy{
+            background: red;
+        }
+
+        .normal{
+            background: green;
+        }
+
+        .unknown{
+            background: gray;
+        }
+
+        .just-true{
+            background: yellow;
+        }
+
+        .just-false{
+            background: gray;
+        }
+
+        .bomb{
+            background: orchid
+        }
+
+        .pagination{
+            float: right;
+        }
+    </style>
+</html>
