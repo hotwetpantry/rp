@@ -1,95 +1,141 @@
 <html>
-    <head>
-        <script src="angular.js"></script>
-        <script src="app.js"></script>
-    </head>
 
-    <body ng-app="pantryApp" style="width:500px;">
-        <div ng-controller="mainController as main">
-            <h1>{{main.message}}</h1>
+<head>
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous"> -->
+    <link rel="stylesheet" type="text/css" href="bootstrap.css">
+    <script src="angular.js"></script>
+    <script src="app.js"></script>
+</head>
 
-            <div 
-            ng-repeat="girl in main.girls" 
-                 class={{girl.state}}>
-                <button ng-click="main.makeCrazy(girl)" ng-show="girl.state!='crazy'">C</button>
-                <button ng-click="main.makeNormal(girl)" ng-show="girl.state!='normal'">N</button>
-                <button ng-click="main.open(girl)">Open</button>
-                {{girl.name}} 
-            </div>
+<body ng-app="pantryApp" style="width:500px;">
+    <div ng-controller="mainController as main">
+        <h1>{{main.message}}</h1>
 
-            <div class="pagination">
-                <button ng-click="main.prevPage()" ng-disabled="main.currentPage==1">Prev</button>
-                {{main.currentPage}}
-                <button ng-click="main.nextPage()">Next</button>
-            </div>
-            <br>
-            <input type="text" ng-model="main.currentPage" style="width:50"/>
-            <input type="text" ng-model="main.pageSize" style="width:50"/>pagesize
-            <button ng-click="main.loadGirls()">Go to</button>
+        <div ng-repeat="girl in main.girls" class={{girl.state}}>
+            <button ng-click="main.makeCrazy(girl)" ng-show="girl.state!='crazy'">C</button>
+            <button ng-click="main.makeNormal(girl)" ng-show="girl.state!='normal'">N</button>
+            <button ng-click="main.open(girl)">Open</button>
+            <!-- {{!!girl.rate?girl.rate:"N/A"}} -->
+            <select ng-model="girl.rate">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+            </select>
+            <button ng-click="main.setRate(girl)">Update rate</button> {{girl.name}}
         </div>
 
-        <h2>Are you crazy</h2>
-        <div ng-controller="randController as rand">
-            <h3>Target: '{{rand.tag}}'</h3>
-            <div class="just-{{rand.tag=='all'}}"ng-click="rand.tag='all'">All</div>
-            <div class="just-{{rand.tag=='crazy'}}"ng-click="rand.tag='crazy'">Crazy</div>
-            <div class="just-{{rand.tag=='normal'}}"ng-click="rand.tag='normal'">Normal</div>
-            <div class="just-{{rand.tag=='unknown'}}"ng-click="rand.tag='unknown'">Unknown</div>
-            
-            <div ng-click="rand.hideNames = !rand.hideNames"><input type="checkbox" ng-model="rand.hideNames">Hide names</div>
-            <div ng-click="rand.cheat = !rand.cheat"><input type="checkbox" ng-model="rand.cheat">Cheat</div>
-            <input ng-model="rand.count" placeholder="count" style="width:50"/>
-            <button ng-click=rand.load()>Load</button>
-            <br>
-            <br>
-            <div ng-repeat="girl in rand.girls" class="{{rand.cheat?girl.state:'bomb'}}">
-                <span ng-show="rand.cheat?girl.state=='unknown':false">
+        <div class="pagination">
+            <button ng-click="main.prevPage()" ng-disabled="main.currentPage==1">Prev</button> {{main.currentPage}}
+            <button ng-click="main.nextPage()">Next</button>
+        </div>
+        <br>
+        <input type="text" ng-model="main.currentPage" style="width:50" />
+        <input type="text" ng-model="main.pageSize" style="width:50" />pagesize
+        <button ng-click="main.loadGirls()">Go to</button>
+    </div>
+
+    <h2>Are you crazy</h2>
+    <div ng-controller="randController as rand">
+        <h3>Target: '{{rand.tag}}'</h3>
+        <div class="just-{{rand.tag=='all'}}" ng-click="rand.tag='all'">All</div>
+        <div class="just-{{rand.tag=='crazy'}}" ng-click="rand.tag='crazy'">Crazy</div>
+        <div class="just-{{rand.tag=='normal'}}" ng-click="rand.tag='normal'">Normal</div>
+        <div class="just-{{rand.tag=='unknown'}}" ng-click="rand.tag='unknown'">Unknown</div>
+
+        <div ng-click="rand.hideNames = !rand.hideNames"><input type="checkbox" ng-model="rand.hideNames">Hide names</div>
+        <div ng-click="rand.cheat = !rand.cheat"><input type="checkbox" ng-model="rand.cheat">Cheat</div>
+        <div ng-click="rand.hideRate = !rand.hideRate"><input type="checkbox" ng-model="rand.hideRate">hideRate</div>
+        <input ng-model="rand.count" placeholder="count" style="width:50" />
+        <button ng-click=rand.load()>Load</button>
+        <br>
+        <br>
+        <div ng-repeat="girl in rand.girls" class="{{rand.cheat?girl.state:'bomb'}}">
+            <span ng-show="rand.cheat?girl.state=='unknown':false">
                     <button ng-click="rand.makeCrazy(girl)">C</button>
                     <button ng-click="rand.makeNormal(girl)">N</button>
                 </span>
-                <button ng-click="rand.open(girl)">Open</button>
-                {{rand.hideNames?"xxxxx":girl.name}} 
+            <button ng-click="rand.open(girl)">Open</button>
+            <button ng-model="state" ng-click="state = !state">options</button>
+            <span>{{!!girl.rate?girl.rate:"N/A"}} | </span>
+            <span>{{rand.hideNames?"xxxxx":girl.name}}</span>
+            <div ng-show="!!state">
+                <h3>Labels</h3>
+                <div ng-repeat="label in rand.labels" class="btn {{rand.isAttached(girl, label.flag)+'tag'}}" ng-click="rand.applyLabel(girl, label.flag)">
+                    {{label.name}}
+                </div>
+                <div>
+                    <select ng-show="!rand.hideRate" ng-model="girl.rate">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                    </select>
+                    <button ng-show="!rand.hideRate" ng-click="rand.setRate(girl)">Update rate</button>
+                </div>
             </div>
         </div>
-    </body>
+    </div>
+</body>
 
-    <style>
-        div{
-            margin: 3px;
-            padding: 3px;
-        }
+<style>
+    div {
+        margin: 3px;
+        padding: 3px;
+    }
+    
+    button {
+        margin-right: 3px;
+        padding: 10px;
+    }
+    
+    .crazy {
+        background: red;
+    }
+    
+    .normal {
+        background: green;
+    }
+    
+    .unknown {
+        background: gray;
+    }
+    
+    .just-true {
+        background: yellow;
+    }
+    
+    .just-false {
+        background: gray;
+    }
+    
+    .bomb {
+        background: orchid
+    }
+    
+    .pagination {
+        float: right;
+    }
+    
+    .truetag {
+        background: green;
+    }
+    
+    .falsetag {
+        background: gray;
+    }
+</style>
 
-        button{
-            margin-right:3px; 
-            padding: 10px;
-        }
-
-        .crazy{
-            background: red;
-        }
-
-        .normal{
-            background: green;
-        }
-
-        .unknown{
-            background: gray;
-        }
-
-        .just-true{
-            background: yellow;
-        }
-
-        .just-false{
-            background: gray;
-        }
-
-        .bomb{
-            background: orchid
-        }
-
-        .pagination{
-            float: right;
-        }
-    </style>
 </html>
