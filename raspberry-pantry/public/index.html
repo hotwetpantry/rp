@@ -7,7 +7,7 @@
     <script src="app.js"></script>
 </head>
 
-<body ng-app="pantryApp" style="width:500px;">
+<body ng-app="pantryApp">
     <div ng-controller="mainController as main">
         <h1>{{main.message}}</h1>
 
@@ -15,7 +15,6 @@
             <button ng-click="main.makeCrazy(girl)" ng-show="girl.state!='crazy'">C</button>
             <button ng-click="main.makeNormal(girl)" ng-show="girl.state!='normal'">N</button>
             <button ng-click="main.open(girl)">Open</button>
-            <!-- {{!!girl.rate?girl.rate:"N/A"}} -->
             <select ng-model="girl.rate">
                 <option value="1">1</option>
                 <option value="2">2</option>
@@ -63,6 +62,7 @@
                 </span>
             <button ng-click="rand.open(girl)">Open</button>
             <button ng-model="state" ng-click="state = !state">options</button>
+            <button ng-show="!!rand.countTags(girl.flags)">{{!girl.flags?"0":rand.countTags(girl.flags)}}</button>
             <span>{{!!girl.rate?girl.rate:"N/A"}} | </span>
             <span>{{rand.hideNames?"xxxxx":girl.name}}</span>
             <div ng-show="!!state">

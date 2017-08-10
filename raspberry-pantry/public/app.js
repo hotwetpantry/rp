@@ -22,6 +22,16 @@ var labels = [
     { name: 'DarkSkin', flag: 1048576 }
 ];
 
+
+function bitcount(n) {
+    var count = 0;
+    while (!!n) {
+        count += (n & 1);
+        n = n >> 1;
+    }
+    return count;
+}
+
 angular.module("pantryApp", [])
     .controller("mainController",
         function($http) {
@@ -136,6 +146,10 @@ angular.module("pantryApp", [])
                 function(args) {
                     console.log("fail", args);
                 });
+        };
+
+        this.countTags = function(flags) {
+            return bitcount(flags);
         };
 
         this.makeNormal = function(girl) {
