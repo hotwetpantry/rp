@@ -11,15 +11,17 @@ var labels = [
     { name: 'Fat', flag: 512 },
     { name: 'Slim', flag: 1024 },
     { name: 'Ass', flag: 2048 },
-    { name: 'BigTits', flag: 4096 },
-    { name: 'SmallTits', flag: 8192 },
-    { name: 'NotEnough', flag: 16384 },
-    { name: 'WithoutFace', flag: 32768 },
+    { name: 'Black Hole', flag: 2097152 },
+    { name: 'Big Tits', flag: 4096 },
+    { name: 'Small Tits', flag: 8192 },
+    { name: 'Not Enough', flag: 16384 },
+    { name: 'Without Face', flag: 32768 },
     { name: 'Hard', flag: 65536 },
     { name: 'FMN', flag: 131072 },
     { name: 'Asian', flag: 262144 },
     { name: 'Black', flag: 524288 },
-    { name: 'DarkSkin', flag: 1048576 }
+    { name: 'Dark Skin', flag: 1048576 },
+    { name: 'Sweet pussy', flag: 4194304 }
 ];
 
 
