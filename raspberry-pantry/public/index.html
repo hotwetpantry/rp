@@ -1,7 +1,6 @@
 <html>
 
 <head>
-    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous"> -->
     <link rel="stylesheet" type="text/css" href="bootstrap.css">
     <script src="angular.js"></script>
     <script src="app.js"></script>
@@ -47,6 +46,51 @@
         <div class="just-{{rand.tag=='crazy'}}" ng-click="rand.tag='crazy'">Crazy</div>
         <div class="just-{{rand.tag=='normal'}}" ng-click="rand.tag='normal'">Normal</div>
         <div class="just-{{rand.tag=='unknown'}}" ng-click="rand.tag='unknown'">Unknown</div>
+
+        <h3>Filters</h3>
+        <div>
+            <div>
+                <h3>Labels</h3>
+                <div ng-repeat="label in rand.labels" class="btn {{rand.containsFlag(rand.mask, label.flag)+'tag'}}" ng-click="rand.setFilter(label.flag)">
+                    {{label.name}}
+                </div>
+            </div>
+            <button ng-click="rand.applyFilters('or')">OR</button>
+            <button ng-click="rand.applyFilters('and')">AND</button>
+
+            <div ng-repeat="girl in rand.filtered" class="filtered">
+                <span ng-show="rand.cheat?girl.state=='unknown':false">
+                    <button ng-click="rand.makeCrazy(girl)">C</button>
+                    <button ng-click="rand.makeNormal(girl)">N</button>
+                </span>
+                <button ng-click="rand.open(girl)">Open</button>
+                <button ng-model="state" ng-click="state = !state">options</button>
+                <button ng-show="!!rand.countTags(girl.flags)">{{!girl.flags?"0":rand.countTags(girl.flags)}}</button>
+                <span>{{!!girl.rate?girl.rate:"N/A"}} | </span>
+                <span>{{rand.hideNames?"xxxxx":girl.name}}</span>
+                <div ng-show="!!state">
+                    <h3>Labels</h3>
+                    <div ng-repeat="label in rand.labels" class="btn {{rand.isAttached(girl, label.flag)+'tag'}}" ng-click="rand.applyLabel(girl, label.flag)">
+                        {{label.name}}
+                    </div>
+                    <div>
+                        <select ng-show="!rand.hideRate" ng-model="girl.rate">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                    </select>
+                        <button ng-show="!rand.hideRate" ng-click="rand.setRate(girl)">Update rate</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div ng-click="rand.hideNames = !rand.hideNames"><input type="checkbox" ng-model="rand.hideNames">Hide names</div>
         <div ng-click="rand.cheat = !rand.cheat"><input type="checkbox" ng-model="rand.cheat">Cheat</div>
@@ -123,6 +167,10 @@
     
     .bomb {
         background: orchid
+    }
+    
+    .filtered {
+        background: cyan
     }
     
     .pagination {

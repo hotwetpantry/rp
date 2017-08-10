@@ -122,12 +122,21 @@ angular.module("pantryApp", [])
             return !!(girl.flags & label);
         };
 
+        this.containsFlag = function(flags, label) {
+            return !!(flags & label);
+        };
+
+        this.setFilter = function(tag) {
+            context.mask ^= tag;
+        };
+
         this.load = function() {
 
             $http.get("/girls/rand?count=" + context.count + "&tag=" + context.tag)
                 .then(
                     function(args) {
                         context.girls = args.data;
+                        context._girls = args.data;
                     },
                     function(args) {
                         console.log("error", args)
@@ -183,5 +192,25 @@ angular.module("pantryApp", [])
                 function(args) {
                     console.log("fail", args);
                 });
+        };
+
+        this.applyFilters = function(operator) {
+            var girls = context.girls;
+            var mask = context.mask;
+            var filtered = [];
+
+            for (var i = 0; i < girls.length; i++) {
+                var girl = girls[i];
+                var result = girl.flags & mask;
+
+                if (operator == "or" && !!result) {
+                    filtered.push(girl);
+                }
+                if (operator == "and" && result === mask) {
+                    filtered.push(girl);
+                }
+            }
+
+            context.filtered = filtered;
         };
     });
